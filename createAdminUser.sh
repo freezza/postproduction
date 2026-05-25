@@ -26,3 +26,18 @@ defaults write /Library/Preferences/com.apple.loginwindow HiddenUsersList -array
 
 # sets remote login (SSH) on
 systemsetup -f -setremotelogin on
+
+# make new admin
+sysadminctl -addUser tempadmin -fullName "Local Administrator" -password 123456 -admin
+# check admin Secure Token
+sysadminctl -secureTokenStatus tempadmin
+
+# id DISABLE - create Secure Token for new admin
+sudo sysadminctl -secureTokenOn tempadmin -password 123456 -adminUser local_user -adminPassword local_user_pass
+
+# to remove user logout at local_user and login at admin
+sudo sysadminctl -deleteUser local_user
+# ...or over dscl
+sudo dscl . -delete /Users/local_user
+sudo rm -rf /Users/local_user
+
